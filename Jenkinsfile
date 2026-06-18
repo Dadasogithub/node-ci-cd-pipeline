@@ -20,5 +20,17 @@ pipeline {
                 sh 'docker build -t node-cicd-app:${BUILD_NUMBER} .'
             }
         }
+         stage('Deploy') {
+            steps {
+                sh '''
+                docker rm -f node-app || true
+
+                docker run -d \
+                -p 3000:3000 \
+                --name node-app \
+                node-cicd-app:${BUILD_NUMBER}
+                '''
+            }
+        }
     }
 }
