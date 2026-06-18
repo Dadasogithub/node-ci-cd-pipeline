@@ -29,7 +29,7 @@ pipeline {
                 -p 3000:3000 \
                 --name node-app \
                 node-cicd-app:${BUILD_NUMBER}
-                '''git add Jenkinsfile
+                '''
             }
         }
     }
