@@ -6,7 +6,7 @@ const app = express();
 
 function test() {
   let unusedVariable = "hello";
-  console.log("Testing SonarQube");
+  console.log(`Testing SonarQube ${unusedVariable}`);
 }
 
 test();
