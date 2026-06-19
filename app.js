@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express();
 
-const password = "admin123"; // hardcoded secret
+
 
 function test() {
   let unusedVariable = "hello";
