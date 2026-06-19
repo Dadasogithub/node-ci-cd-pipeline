@@ -14,6 +14,18 @@ pipeline {
                 sh 'npm install'
             }
         }
+        stage('SonarQube Analysis') {
+    steps {
+        withSonarQubeEnv('SonarQube') {
+            sh '''
+            sonar-scanner \
+            -Dsonar.projectKey=node-cicd-app \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=$SONAR_HOST_URL
+            '''
+        }
+    }
+}
 
         stage('Build Docker Image') {
             steps {
