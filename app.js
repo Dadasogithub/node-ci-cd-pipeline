@@ -13,7 +13,7 @@ test();
 
 
 app.get('/', (req, res) => {
-    res.send('All pipeline is automated successfully!');
+    res.send('All pipeline is automated successfully! Yes Yes! This is a CICD pipeline for Node.js application using Jenkins, Docker, and SonarQube.    ');
 });
 
 app.listen(3000, () => {
