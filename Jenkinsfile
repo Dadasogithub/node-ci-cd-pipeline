@@ -36,6 +36,14 @@ pipeline {
                 sh 'docker build -t node-cicd-app:${BUILD_NUMBER} .'
             }
         }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 2, unit: 'MINUTES') {
+                 waitForQualityGate abortPipeline: true
+              }
+             }
+        }
          stage('Deploy') {
             steps {
                 sh '''
