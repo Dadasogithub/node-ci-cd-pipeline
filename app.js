@@ -11,8 +11,9 @@ function test() {
 
 test();
 
+
 app.get('/', (req, res) => {
-    res.send('Hello from CI/CD Pipeline updated version');
+    res.send('All pipeline is automated successfully!');
 });
 
 app.listen(3000, () => {
