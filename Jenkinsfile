@@ -48,7 +48,8 @@ pipeline {
               }
              }
         }
-         stage('Deploy') {
+
+        stage('Deploy') {
             steps {
                 sh '''
                 docker rm -f node-app || true
@@ -61,14 +62,14 @@ pipeline {
             }
         }
 
-stage('Push Docker Image') {
-    steps {
-        withCredentials([usernamePassword(
-            credentialsId: 'dockerhub',
-            usernameVariable: 'DOCKER_USER',
-            passwordVariable: 'DOCKER_PASS'
-        )]) {
-
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                
             sh '''
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
 
@@ -77,15 +78,15 @@ stage('Push Docker Image') {
 
             docker push $DOCKER_USER/node-cicd-app:${BUILD_NUMBER}
             '''
+        }}
         }
-    }
-    }
+
+        stage('Deploy to Kubernetes') {
+        steps {
+            sh 'kubectl apply -f k8s/'
+            sh 'kubectl rollout status deployment/node-app'
+        }
 }
 
-stage('Deploy to Kubernetes') {
-    steps {
-        sh 'kubectl apply -f k8s/'
-        sh 'kubectl rollout status deployment/node-app'
-    }
 }
 }
