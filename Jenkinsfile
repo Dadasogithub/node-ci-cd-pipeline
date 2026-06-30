@@ -31,11 +31,7 @@ pipeline {
                 }
             }
          
-        stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t node-cicd-app:${BUILD_NUMBER} .'
-            }
-        }
+      
     
 
 
@@ -49,20 +45,12 @@ pipeline {
              }
         }
 
-        stage('Deploy') {
+        stage('Build Docker Image') {
             steps {
-                sh '''
-                docker rm -f node-app || true
-
-                docker run -d \
-                -p 3000:3000 \
-                --name node-app \
-                node-cicd-app:${BUILD_NUMBER}
-                '''
+                sh 'docker build -t node-cicd-app:${BUILD_NUMBER} .'
             }
         }
-
-        stage('Push Docker Image') {
+         stage('Push Docker Image') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub',
@@ -80,6 +68,21 @@ pipeline {
             '''
         }}
         }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                docker rm -f node-app || true
+
+                docker run -d \
+                -p 3000:3000 \
+                --name node-app \
+                node-cicd-app:${BUILD_NUMBER}
+                '''
+            }
+        }
+
+       
 
         stage('Deploy to Kubernetes') {
         steps {
